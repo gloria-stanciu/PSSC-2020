@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,11 +20,11 @@ namespace L06.Models
 
     public class Reply
     {
-        public string QuestionId { get; }
+        public int QuestionId { get; }
         public string Answer { get; }
-        public string AuthorId { get; }
+        public int AuthorId { get; }
 
-        public Reply(string questionId, string answer, string authorId)
+        public Reply(int questionId, string answer, int authorId)
         {
             QuestionId = questionId;
             Answer = answer;

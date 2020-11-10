@@ -1,13 +1,13 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using L06.Inputs;
 using L06.Models;
-using Tema6.Inputs;
+using L06.Inputs;
+using CSharp.Choices;
 
 namespace L06.Outputs
 {
-
+    [AsChoice]
     public static partial class CreateReplyResult
     {
         public interface ICreateReplyResult { }
@@ -22,29 +22,24 @@ namespace L06.Outputs
             }
         }
 
-        public class ReplyInvalid : ICreateReplyResult
+        public class InvalidReply : ICreateReplyResult
         {
             public string Reasons { get; }
 
-            public ReplyInvalid(string reasons)
+            public InvalidReply(string reasons)
             {
                 Reasons = reasons;
             }
         }
 
-        public interface IValidateReplyResult
-        {
-        }
-        public class InvalidRequest : IValidateReplyResult
+        public class InvalidRequest : ICreateReplyResult
         {
             public string ValidationErrors { get; }
-
-            public InvalidRequest(string validationErrors, CreateReplyCmd cmd)
+            public InvalidRequest(string validationErrors)
             {
                 ValidationErrors = validationErrors;
             }
         }
 
     }
-
 }
