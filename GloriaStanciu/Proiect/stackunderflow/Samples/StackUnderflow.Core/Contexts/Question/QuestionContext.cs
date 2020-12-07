@@ -10,7 +10,7 @@ using static StackUnderflow.Domain.Core.Contexts.Question.CheckLanguageOperation
 using static StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOperations.CreateQuestionResult;
 using static StackUnderflow.Domain.Core.Contexts.Question.SendQuestionOwnerAcknoledgementCmd.SendQuestionOwnerAcknowledgementResult;
 
-namespace StackUnderflow.Domain.Core.Contexts.Question
+namespace StackUnderflow.Domain.Core.Contexts.Questions
 {
     public static class QuestionContext
     {

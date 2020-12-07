@@ -4,7 +4,7 @@ using System.Text;
 
 namespace StackUnderflow.Domain.Core.Contexts.Question
 {
-    class QuestionDependencies
+    public class QuestionDependencies
     {
     }
 }

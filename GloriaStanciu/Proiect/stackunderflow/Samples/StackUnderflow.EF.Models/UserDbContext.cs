@@ -13,8 +13,7 @@ namespace StackUnderflow.EF
     {
         public UserDbContext() { }
 
-        public UserDbContext(DbContextOptions<StackUnderflowContext> options)
-            : base(options)
+        public UserDbContext(DbContextOptions<StackUnderflowContext> options) : base(options)
         {
         }
 

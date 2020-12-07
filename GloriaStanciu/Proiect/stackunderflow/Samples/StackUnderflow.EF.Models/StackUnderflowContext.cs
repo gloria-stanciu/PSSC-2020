@@ -2,18 +2,15 @@
 using Access.Primitives.EFCore.DSL;
 using Access.Primitives.IO;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace StackUnderflow.EF.Models
 {
     public partial class StackUnderflowContext : DbContext
     {
         public StackUnderflowContext()
-        {
-        }
+        {}
 
-        public StackUnderflowContext(DbContextOptions<StackUnderflowContext> options)
-            : base(options)
+        public StackUnderflowContext(DbContextOptions<StackUnderflowContext> options) : base(options)
         {
         }
 
@@ -39,7 +36,7 @@ namespace StackUnderflow.EF.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=ACCESS-1303SF2\\SQL2017;Database=StackUnderflow;Integrated Security=true;");
+                optionsBuilder.UseSqlServer("Server=LAPTOP-T3JF4NFL\\MSSQLSERVER01;Database=StackOverflow;Integrated Security=true;");
             }
         }
 

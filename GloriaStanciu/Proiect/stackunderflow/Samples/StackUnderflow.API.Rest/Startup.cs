@@ -1,24 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using Access.Primitives.IO;
 using Access.Primitives.IO.Extensions;
 using Access.Primitives.IO.Mocking;
-using Jaeger;
-using Jaeger.Samplers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using OpenTracing;
-using OpenTracing.Util;
 using StackUnderflow.Backoffice.Adapters.CreateTenant;
 using StackUnderflow.EF.Models;
 
@@ -40,9 +28,9 @@ namespace FakeSO.API.Rest
             services.AddSingleton<IExecutionContext, LiveExecutionContext>();
             services.AddTransient<IInterpreterAsync>(sp => new LiveInterpreterAsync(sp));
 
-            services.AddDbContext<StackUnderflowContext>(builder =>
+            services.AddDbContext<DatabaseContext>(builder =>
             {
-                builder.UseSqlServer(Configuration.GetConnectionString("StackUnderflow"));
+                builder.UseSqlServer(Configuration.GetConnectionString("StackOverflow"));
             });
 
             services.AddControllers();

@@ -8,11 +8,11 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOperations
     public class CreateQuestionCmd
     {
         [Required]
-        public string Title { get; private set; }
+        public string Title { get; set; }
         [Required]
-        public string Description { get; private set; }
+        public string Description { get; set; }
         [Required]
-        public string Tags { get; private set; }
+        public string Tags { get; set; }
 
         public CreateQuestionCmd() { }
         public CreateQuestionCmd(string Title, string Description, string Tags)

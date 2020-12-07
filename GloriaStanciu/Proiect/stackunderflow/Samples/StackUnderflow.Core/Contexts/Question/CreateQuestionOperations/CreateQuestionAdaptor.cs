@@ -1,5 +1,6 @@
 ﻿using Access.Primitives.Extensions.ObjectExtensions;
 using Access.Primitives.IO;
+using StackUnderflow.Domain.Core.Contexts.Question;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,7 +31,7 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOperations
 
         private ICreateQuestionResult AddQuestion(QuestionWriteContext state, object v)
         {
-            return new QuestionCreated(new Guid("1"), "Titlu", "Descriere", "Tag-uri");
+            return new QuestionCreated(new Guid("1"), "Titlu1", "Descriere pentru prima intrebare", "Tag-uri");
         }
 
         private object CreateQuestionFromCmd(CreateQuestionCmd cmd)
