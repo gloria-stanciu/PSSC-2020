@@ -30,7 +30,8 @@ namespace FakeSO.API.Rest
 
             services.AddDbContext<DatabaseContext>(builder =>
             {
-                builder.UseSqlServer(Configuration.GetConnectionString("StackOverflow"));
+                var connectionString = "Server=LAPTOP-T3JF4NFL;Database=StackOverflow;Integrated security=true";
+                builder.UseSqlServer(connectionString);
             });
 
             services.AddControllers();

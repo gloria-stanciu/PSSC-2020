@@ -31,7 +31,7 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOperations
 
         private ICreateQuestionResult AddQuestion(QuestionWriteContext state, object v)
         {
-            return new QuestionCreated(new Guid("1"), "Titlu1", "Descriere pentru prima intrebare", "Tag-uri");
+            return new QuestionCreated(Guid.NewGuid(), "Titlu1", "Descriere pentru prima intrebare", "Tag-uri");
         }
 
         private object CreateQuestionFromCmd(CreateQuestionCmd cmd)

@@ -10,6 +10,7 @@ using StackUnderflow.Domain.Core.Contexts.Questions;
 using StackUnderflow.Domain.Schema.Backoffice.CreateTenantOp;
 using StackUnderflow.Domain.Schema.Backoffice.InviteTenantAdminOp;
 using System.Linq;
+using System;
 
 namespace StackUnderflow.API.AspNetCore.Controllers
 {
@@ -35,16 +36,16 @@ namespace StackUnderflow.API.AspNetCore.Controllers
            
             var ctx = new QuestionWriteContext(questions);
 
-            var expr = from createTenantResult in QuestionContext.CreateQuestion(cmd)
-                       select createTenantResult;
+            var expr = from CreateQuestionResult in QuestionContext.CreateQuestion(cmd)
+                       select CreateQuestionResult;
 
             var r = await _interpreter.Interpret(expr, ctx, dep);
 
             await _dbContext.SaveChangesAsync();
 
-            _dbContext.QuestionModel.Add(new DatabaseModel.Models.QuestionModel { Title = cmd.Title, Description= cmd.Description, Tags = cmd.Tags});
-            var reply = await _dbContext.QuestionModel.Where(r => r.Id == 1).SingleOrDefaultAsync();
-            _dbContext.QuestionModel.Update(reply);
+            await _dbContext.QuestionModel.Add(new DatabaseModel.Models.QuestionModel {Title = cmd.Title, Description= cmd.Description, Tags = cmd.Tags}).GetDatabaseValuesAsync();
+            //var reply = await _dbContext.QuestionModel.Where(r => r.Title == "Intrebarea1").SingleOrDefaultAsync();
+            //_dbContext.QuestionModel.Update(reply);
 
             return r.Match(
                 succ => (IActionResult)Ok("Succeeded"),
