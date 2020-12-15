@@ -10,7 +10,9 @@ using StackUnderflow.Domain.Core.Contexts.Questions;
 using StackUnderflow.Domain.Schema.Backoffice.CreateTenantOp;
 using StackUnderflow.Domain.Schema.Backoffice.InviteTenantAdminOp;
 using System.Linq;
+using StackUnderflow.DatabaseModel.Models;
 using System;
+using StackUnderflow.Domain.Core.Contexts.Question.SendQuestionOwnerAcknoledgementOperations;
 
 namespace StackUnderflow.API.AspNetCore.Controllers
 {
@@ -36,19 +38,19 @@ namespace StackUnderflow.API.AspNetCore.Controllers
            
             var ctx = new QuestionWriteContext(questions);
 
-            var expr = from CreateQuestionResult in QuestionContext.CreateQuestion(cmd)
-                       select CreateQuestionResult;
+            var expr = from CreateTenantResult in QuestionContext.CreateQuestion(cmd)
+                       select CreateTenantResult;
 
             var r = await _interpreter.Interpret(expr, ctx, dep);
 
-            await _dbContext.SaveChangesAsync();
 
-            await _dbContext.QuestionModel.Add(new DatabaseModel.Models.QuestionModel {Title = cmd.Title, Description= cmd.Description, Tags = cmd.Tags}).GetDatabaseValuesAsync();
+            _dbContext.QuestionModel.Add(new DatabaseModel.Models.QuestionModel {Title = cmd.Title, Description= cmd.Description, Tags = cmd.Tags});
             //var reply = await _dbContext.QuestionModel.Where(r => r.Title == "Intrebarea1").SingleOrDefaultAsync();
             //_dbContext.QuestionModel.Update(reply);
+            await _dbContext.SaveChangesAsync();
 
             return r.Match(
-                succ => (IActionResult)Ok("Succeeded"),
+                succ => (IActionResult)Ok(succ),
                 fail => BadRequest("Reply could not be added")
                 );
         }
