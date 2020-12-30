@@ -10,8 +10,7 @@ namespace StackUnderflow.DatabaseModel.Models
     public class QuestionModel
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid QuestionId { get; set; }
         public string Title{ get; set; }
         public string Description { get; set; }
         public string Tags { get; set; }

@@ -21,6 +21,7 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOperations
             var workflow = from valid in cmd.TryValidate()
                            let t = AddQuestion(state, CreateQuestionFromCmd(cmd))
                            select t;
+            state.Questions.Add(new DatabaseModel.Models.QuestionModel { QuestionId = Guid.NewGuid(), Title = "Titlul intrebarii", Description = "Descrierea intrebarii", Tags = "Tag-urile intrebarii" });
             var result = await workflow.Match(
                 Succ: r => r,
                 Fail: er => new QuestionNotCreated(er.Message)
@@ -31,7 +32,7 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOperations
 
         private ICreateQuestionResult AddQuestion(QuestionWriteContext state, object v)
         {
-            return new QuestionCreated(1, "Titlu1", "Descriere pentru prima intrebare", "Tag-uri");
+            return new QuestionCreated(Guid.NewGuid(), "Titlu intrebare", "Descriere intrabare", "Tag-uri intrebare");
         }
 
         private object CreateQuestionFromCmd(CreateQuestionCmd cmd)

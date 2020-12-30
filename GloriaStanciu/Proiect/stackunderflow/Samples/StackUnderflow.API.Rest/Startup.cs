@@ -30,7 +30,7 @@ namespace FakeSO.API.Rest
 
             services.AddDbContext<DatabaseContext>(builder =>
             {
-                var connectionString = "Server=LAPTOP-T3JF4NFL;Database=StackOverflow;Integrated security=true";
+                var connectionString = "Server=LAPTOP-T3JF4NFL\\MSSQLSERVER01;Database=StackOverflow;Trusted_Connection=true";
                 builder.UseSqlServer(connectionString);
             });
 

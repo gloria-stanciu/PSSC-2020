@@ -33,24 +33,27 @@ namespace StackUnderflow.API.AspNetCore.Controllers
         public async Task<IActionResult> CreateQuestion([FromBody] CreateQuestionCmd cmd)
         {
             var dep = new QuestionDependencies();
-           
+
             var questions = await _dbContext.QuestionModel.ToListAsync();
-           
+
             var ctx = new QuestionWriteContext(questions);
 
-            var expr = from CreateTenantResult in QuestionContext.CreateQuestion(cmd)
-                       select CreateTenantResult;
+            var expr = from CreateQuestionResult in QuestionContext.CreateQuestion(cmd)
+                       select CreateQuestionResult;
+                       //from checkLanguageResult in QuestionContext.CheckLanguage(new CheckLanguageCmd(cmd.Body))
+                       //from sendAckToQuestionOwnerCmd in QuestionContext.SendAckToQuestionOwner(new SendAckToQuestionOwnerCmd(1, 2))
+                       //select createQuestionResult;
 
             var r = await _interpreter.Interpret(expr, ctx, dep);
 
 
-            _dbContext.QuestionModel.Add(new DatabaseModel.Models.QuestionModel {Title = cmd.Title, Description= cmd.Description, Tags = cmd.Tags});
+            _dbContext.QuestionModel.Add(new DatabaseModel.Models.QuestionModel {QuestionId = Guid.NewGuid(), Title = cmd.Title, Description= cmd.Description, Tags = cmd.Tags});
             //var reply = await _dbContext.QuestionModel.Where(r => r.Title == "Intrebarea1").SingleOrDefaultAsync();
             //_dbContext.QuestionModel.Update(reply);
             await _dbContext.SaveChangesAsync();
 
             return r.Match(
-                succ => (IActionResult)Ok(succ),
+                succ => (IActionResult)Ok("Successfully"),
                 fail => BadRequest("Reply could not be added")
                 );
         }
