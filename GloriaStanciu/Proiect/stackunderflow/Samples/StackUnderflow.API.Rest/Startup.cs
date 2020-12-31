@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Orleans;
+using Orleans.Hosting;
 using StackUnderflow.Backoffice.Adapters.CreateTenant;
 using StackUnderflow.EF.Models;
 
@@ -35,6 +37,7 @@ namespace FakeSO.API.Rest
             });
 
             services.AddControllers();
+            services.AddSingleton(sp => GetSiloClusterClient());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +56,20 @@ namespace FakeSO.API.Rest
             {
                 endpoints.MapControllers();
             });
+        }
+        private static IClusterClient GetSiloClusterClient()
+        {
+            var client = new ClientBuilder()
+                .UseLocalhostClustering()
+                .ConfigureApplicationParts(parts =>
+                {
+                    parts.AddApplicationPart(typeof(GrainInterfaces.IHello).Assembly)
+                    .WithReferences();
+                })
+                .AddSimpleMessageStreamProvider("SMSProvider", options => { options.FireAndForgetDelivery = true; })
+                .Build();
+            client.Connect().Wait();
+            return client;
         }
     }
 }

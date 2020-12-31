@@ -13,6 +13,8 @@ using System.Linq;
 using StackUnderflow.DatabaseModel.Models;
 using System;
 using StackUnderflow.Domain.Core.Contexts.Question.SendQuestionOwnerAcknoledgementOperations;
+using Access.Primitives.EFCore;
+using StackUnderflow.Domain.Core.Contexts.Question.CheckLanguageOperations;
 
 namespace StackUnderflow.API.AspNetCore.Controllers
 {
@@ -36,13 +38,17 @@ namespace StackUnderflow.API.AspNetCore.Controllers
 
             var questions = await _dbContext.QuestionModel.ToListAsync();
 
-            var ctx = new QuestionWriteContext(questions);
+            // var ctx = new QuestionWriteContext(questions);
+
+            _dbContext.QuestionModel.AttachRange(questions);
+            var ctx = new QuestionWriteContext(new EFList<QuestionModel>(_dbContext.QuestionModel));
 
             var expr = from CreateQuestionResult in QuestionContext.CreateQuestion(cmd)
+                       //let checkLanguageCmd = new CheckLanguageCmd()
+                       //select CreateQuestionResult;
+                       from checkLanguageResult in QuestionContext.CheckLanguage(new CheckLanguageCmd(cmd.Description))
+                       from sendAckToQuestionOwnerCmd in QuestionContext.SendQuestionOwnerAcknowledgment(new SendQuestionOwnerAcknowledgementCmd(1, 2))
                        select CreateQuestionResult;
-                       //from checkLanguageResult in QuestionContext.CheckLanguage(new CheckLanguageCmd(cmd.Body))
-                       //from sendAckToQuestionOwnerCmd in QuestionContext.SendAckToQuestionOwner(new SendAckToQuestionOwnerCmd(1, 2))
-                       //select createQuestionResult;
 
             var r = await _interpreter.Interpret(expr, ctx, dep);
 
