@@ -15,6 +15,7 @@ using System;
 using StackUnderflow.Domain.Core.Contexts.Question.SendQuestionOwnerAcknoledgementOperations;
 using Access.Primitives.EFCore;
 using StackUnderflow.Domain.Core.Contexts.Question.CheckLanguageOperations;
+using Orleans;
 
 namespace StackUnderflow.API.AspNetCore.Controllers
 {
@@ -24,12 +25,26 @@ namespace StackUnderflow.API.AspNetCore.Controllers
     {
         private readonly IInterpreterAsync _interpreter;
         private readonly DatabaseContext _dbContext;
+        private readonly IClusterClient clusterClient;
 
-        public QuestionsController(IInterpreterAsync interpreter, DatabaseContext dbContext)
+        public QuestionsController(IInterpreterAsync interpreter, IClusterClient clusterClient)
         {
             _interpreter = interpreter;
-            _dbContext = dbContext;
+            //_dbContext = dbContext;
+            this.clusterClient = clusterClient;
+        }
+        [HttpPost("createQuestionAgain")]
+        public async Task<IActionResult>CreateQuestion()
+        {
+            var stream = clusterClient.GetStreamProvider("SMSProvider").GetStream<Post>(Guid.Empty, "questions");
+            var post = new Post
+            {
+                PostId = 2,
+                PostText = "My question2"
+            };
 
+            await stream.OnNextAsync(post);
+            return Ok();
         }
         [HttpPost("createQuestion")]
         public async Task<IActionResult> CreateQuestion([FromBody] CreateQuestionCmd cmd)

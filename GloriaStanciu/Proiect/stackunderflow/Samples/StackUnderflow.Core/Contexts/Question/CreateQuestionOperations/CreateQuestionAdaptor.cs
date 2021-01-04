@@ -21,7 +21,7 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOperations
             var workflow = from valid in cmd.TryValidate()
                            let t = AddQuestion(state, CreateQuestionFromCmd(cmd))
                            select t;
-            state.Questions.Add(new DatabaseModel.Models.QuestionModel { QuestionId = Guid.NewGuid(), Title = "Titlul intrebarii", Description = "Descrierea intrebarii", Tags = "Tag-urile intrebarii" });
+            //state.Questions.Add(new DatabaseModel.Models.QuestionModel { QuestionId = Guid.NewGuid(), Title = "Titlul intrebarii", Description = "Descrierea intrebarii", Tags = "Tag-urile intrebarii" });
             var result = await workflow.Match(
                 Succ: r => r,
                 Fail: er => new QuestionNotCreated(er.Message)

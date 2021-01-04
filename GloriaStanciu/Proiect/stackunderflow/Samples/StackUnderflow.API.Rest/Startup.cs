@@ -30,7 +30,7 @@ namespace FakeSO.API.Rest
             services.AddSingleton<IExecutionContext, LiveExecutionContext>();
             services.AddTransient<IInterpreterAsync>(sp => new LiveInterpreterAsync(sp));
 
-            services.AddDbContext<DatabaseContext>(builder =>
+            services.AddDbContext<StackUnderflowContext>(builder =>
             {
                 var connectionString = "Server=LAPTOP-T3JF4NFL\\MSSQLSERVER01;Database=StackOverflow;Trusted_Connection=true";
                 builder.UseSqlServer(connectionString);
